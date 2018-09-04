@@ -7,9 +7,9 @@
         </header>
         <main>
             <div class="search">
-                <input type="text" placeholder="用户名/地址/开发时间">
-                <button class="close">X</button>
-                <span class="ok">确定</span>
+                <input type="text" placeholder="用户名/开发时间" class="keyword">
+                <button class="close" @click="close">X</button>
+                <span class="ok" @click="ok">确定</span>
             </div>
             <div class="nav">
                 <div class="nav-item">
@@ -42,6 +42,7 @@
                 </router-link>
             </div>
         </main>
+        <p v-show="showTishi" class="showTishi">没有查询到符合条件的数据</p>
     </div>
 </template>
 
@@ -50,20 +51,44 @@
         name: "myuser",
         data(){
             return{
-                user:[]
+                user:[],
+                keyword:"",
+                showTishi:false
             }
         },
         mounted:function(){
-            let token=JSON.parse(localStorage.getItem('user')).token;
-            this.$axios.get('/users',
-                { headers: {
-                        'Authorization': 'Bearer ' + token,
-                    }}).then(res=>{
-                this.user=res.data.data
-                console.log(res.data.data)
-            })
+            this.getinfo()
         },
         methods:{
+            //查询关键字
+            ok(){
+                let word=document.querySelector(".keyword");
+                this.keyword=word.value;
+               this.getinfo()
+            },
+            close(){
+                let word=document.querySelector(".keyword");
+                word.value=""
+            },
+            //获取列表
+            getinfo(){
+                let token=JSON.parse(localStorage.getItem('user')).token;
+                this.$axios.get('/users',
+                    {    params:{
+                            keyword:this.keyword
+                        },
+                        headers: {
+                            'Authorization': 'Bearer ' + token,
+                        }}).then(res=>{
+                    this.user=res.data.data
+                    if(this.user.list.length == 0){
+                        this.showTishi=true;
+                    }else{
+                        this.showTishi=false;
+                    }
+                    console.log(res.data.data)
+                })
+            },
             goback:function () {
                 this.$router.go(-1);
             }
@@ -72,6 +97,13 @@
 </script>
 
 <style scoped>
+    .showTishi
+    {
+        text-align: center;
+        color: red;
+        font-size: 0.28rem;
+        padding-top: 0.20rem;
+    }
     #main{
         width: 100vw;
         height: 100vh;
@@ -163,7 +195,7 @@
     .record{
         width: 100%;
         height: auto;
-        padding-bottom: 0.10rem;
+        /*padding-bottom: 0.10rem;*/
         background-size: 100% 100%;
         background-repeat: no-repeat;
         background-image: url("../assets/images/hybg@2x.png");

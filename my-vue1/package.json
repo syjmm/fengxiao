@@ -12,10 +12,14 @@
   "dependencies": {
     "area-data": "^5.0.6",
     "axios": "^0.18.0",
+    "datepicker-mobile": "^1.0.0",
+    "echarts": "^4.1.0",
     "vue": "^2.5.2",
     "vue-area-linkage": "^5.0.0",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vue2-datepick": "^3.0.8",
+    "vuex": "^3.0.1",
+    "vux": "^2.9.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

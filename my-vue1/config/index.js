@@ -11,12 +11,12 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/api': {
-            //target代表源地址
-            target: 'http://school.googlehack.cn',
-            changeOrigin: true, //允许跨域
-
-        }
+        // '/api': {
+        //     //target代表源地址
+        //     target: 'http://school.hxyouhuo.com',
+        //     changeOrigin: true, //允许跨域
+        //
+        // }
 
     },
 

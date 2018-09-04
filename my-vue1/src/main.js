@@ -4,11 +4,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import './assets/js/rem.js'
-import  './store'
+// import  './store'
+import echarts from 'echarts'
 import axios from 'axios'
 Vue.prototype.$axios = axios;
-axios.defaults.baseURL = '/api'
-Vue.config.productionTip = false
+axios.defaults.baseURL = 'http://school.hxyouhuo.com/api';
+Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
 new Vue({

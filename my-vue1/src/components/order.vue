@@ -7,37 +7,47 @@
         </header>
         <main>
             <div class="nav">
-                <div class="nav-item">
+                <div class="nav-item" @click="touchtype(2)">
                     <span>门店直营</span>
-                    <img src="images/d@2x.png" alt="" class="xian">
-                    <div class="lan"></div>
+                    <div class="xian"></div>
+                    <div class="lan" v-show="order_status == ''"></div>
                 </div>
-                <div class="nav-item">
+                <div class="nav-item" @click="touchtype(3)">
                     <span>总仓发货</span>
-                    <img src="images/d@2x.png" alt="" class="xian">
+                    <div class="xian"></div>
+                    <div class="lan" v-show="order_status == 3"></div>
                 </div>
-                <div class="nav-item">
+                <div class="nav-item" @click="touchtype(4)">
                     <span>兑换订单</span>
-                    <img src="images/d@2x.png" alt="" class="xian">
+                    <div class="xian"></div>
+                    <div class="lan" v-show="order_status == 4"></div>
                 </div>
-                <div class="nav-item">
+                <div class="nav-item" @click="touchtype(5)">
                     <span>特价订单</span>
-                    <img src="images/d@2x.png" alt="" class="xian">
+                    <div class="xian"></div>
+                    <div class="lan" v-show="order_status == 5"></div>
                 </div>
-                <div class="nav-item">
+                <div class="nav-item" @click="touchtype(6)">
                     <span>校园商品</span>
+                    <div class="lan" v-show="order_status == 6"></div>
                 </div>
+
             </div>
-            <router-link to="/ordershow">
-                <div class="state">
-                    <span class="phone">商品名称：农夫山泉10ML</span>
-                    <span class="actives">待支付</span>
-                    <span class="money">用户：王五</span>
-                    <span class="actives actives1">提成：20元</span>
-                    <span class="money">应付：2000.00元</span>
-                    <span class="money">联系方式：1872875655</span>
-                    <span class="money">下单时间：2018-8-05 09:34</span>
-                    <span class="money">联系人：本人</span>
+            <router-link :to="{name:'ordershow',query:{oid:item.order_id}}" v-for="item in list" :key="item.order_id">
+                <div class="state clearfix" >
+                    <div class="top">
+                        <span class="phone">商品名称：{{item.order_title}}</span>
+                        <span class="actives">{{item.order_status}}</span>
+                    </div>
+
+                        <span class="money">用户：{{item.user_name}}</span>
+                        <span class="actives actives1">提成：{{item.profits}}元</span>
+
+
+                    <span class="money">应付：{{item.order_money}}元</span>
+                    <span class="money">联系方式：{{item.user_tel}}</span>
+                    <span class="money">下单时间：{{item.order_time}}</span>
+                    <span class="money">联系人：{{item.distributor}}</span>
                 </div>
             </router-link>
         </main>
@@ -47,19 +57,57 @@
 <script>
     export default {
         name: "order",
+        data(){
+            return{
+                order_status:"",
+                list:[],
+
+            }
+        },
+        mounted:function(){
+           this.getorderinfo();
+
+        },
         methods:{
             goback:function () {
                 this.$router.go(-1);
+            },
+            touchtype(type){
+                this.order_status = (type==2)?"":type;
+                this.getorderinfo();
+            },
+            //获得订单信息
+            getorderinfo(){
+                let status = this.order_status || "2";
+                let token=JSON.parse(localStorage.getItem('user')).token;
+                this.$axios.get('/orders',{
+                    params:{
+                        cate:status
+                    },
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }}).then(res=>{
+                    this.list=res.data.data.list;
+
+
+                })
             }
         }
     }
 </script>
 
 <style scoped>
+    .top{
+        width: 100%;
+        height: 0.30rem;
+        float:left;
+    }
     #main{
         width: 100vw;
-        height: 100vh;
+        height: auto;
+        min-height: 100vh;
         background: #f5f5f5;
+        padding-bottom: 0.25rem;
     }
     header{
         width: 100%;
@@ -98,6 +146,8 @@
         position:absolute;
         top:0.24rem;
         right:0rem;
+        border-right: 0.02rem dashed #f2f2f2;
+        background-color: #f5f5f5;
 
     }
     .xian1{
@@ -115,6 +165,7 @@
         width: 7.15rem;
         height: 4.00rem;
         margin: 0 auto;
+        position: relative;
         margin-top: 0.17rem;
         padding-top:0.26rem;
         padding-left: 0.45rem;
@@ -128,6 +179,9 @@
         color:#555555;
         display: block;
         float: left;
+        width: 50%;
+        height: 0.43rem;
+        overflow:hidden;
     }
     .actives{
         font-size: 0.28rem;
@@ -147,7 +201,10 @@
         line-height:0.28rem;
     }
     .actives1{
-        padding-top: 0.30rem;
+        /*padding-top: 0.30rem;*/
+        position: absolute;
+        top:0.90rem;
+        right:0.10rem;
     }
 
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view class="clearfix"/>
   </div>
 </template>
 
@@ -18,6 +18,20 @@ export default {
   color: #2c3e50;
  font-size:0.22rem;
 
+}
+
+.clearfix:after
+{
+  content:".";
+  display:block;
+  height:0;
+  visibility:hidden;
+  clear:both;
+}
+.clearfix {
+  zoom:1;
+  display:block;
+  clear:both;
 }
 *{
   margin: 0;           /*  body-8px */

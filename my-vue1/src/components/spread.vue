@@ -9,7 +9,7 @@
             <div class="erweima">
                 <span class="no">{{usercode.code}}</span>
                 <div class="ma">
-                    <img src="../assets/images/qr2@2x.png" alt="">
+                    <img src="../assets/images/tu.jpg" alt="">
                 </div>
             </div>
         </main>
@@ -49,12 +49,7 @@
     #main{
         width: 100vw;
         height: 100vh;
-        background: linear-gradient(top, #ff1c8b 0%, #f37404 100%) no-repeat;
-        background: -moz-linear-gradient(top, #ff1c8b 0%, #f37404 100%) no-repeat;
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ff1c8b), color-stop(100%,#f37404)) no-repeat ;
-        background: -webkit-linear-gradient(top, #ff1c8b 0%,#f37404 100%) no-repeat;
-        background: -o-linear-gradient(top, #ff1c8b 0%,#f37404 100%) no-repeat;
-        background: -ms-linear-gradient(top, #ff1c8b 0%,#f37404 100%) no-repeat;
+        background:  linear-gradient(to right, #ff1c8b , #f37404);
 
     }
     header{

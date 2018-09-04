@@ -9,10 +9,10 @@
             <router-link to="/yewu">
                 <div class="item">
                     <img src="../assets/images/1_1_1@2x.png" alt="" class="tupiao">
-                    <span class="tutitle">业务统计</span>
+                    <span class="tutitle">个人业绩</span>
                 </div>
             </router-link>
-            <router-link to="/yewu">
+            <router-link to="/team" v-if="level == 2">
                 <div class="item item4">
                     <img src="../assets/images/1@2x (2).png" alt="" class="tupiao">
                     <span class="tutitle">团队业绩</span>
@@ -47,21 +47,39 @@
 </template>
 
 <script>
-
+    import qs from 'qs'
     export default {
         name: "index",
         data(){
             return{
-
+                token:"",
+                level:''
             }
         },
         mounted(){
-
+            this.level=JSON.parse(localStorage.getItem('user')).level;
         },
         methods:{
             loginout:function () {
-                localStorage.removeItem('user');
-                this.$router.push("/");
+                let token=JSON.parse(localStorage.getItem('user')).token;
+
+                this.$axios.post('/logout',
+                    qs.stringify({
+                        name:"",
+                    }),
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+token,
+
+                        }
+                    }
+                    ).then(res=>{
+                    if(res.data.err_code == 0){
+                        localStorage.setItem("user","")
+                        this.$router.push("/");
+                    }
+                })
+
             }
         }
 
@@ -69,14 +87,22 @@
 </script>
 
 <style scoped>
-    body{
+    #main{
+        width: 100vw;
+        height: auto;
+        min-height: 100vh;
         background: #fff;
+        margin-top: 0.95rem;
     }
     header{
         width: 100%;
         height: 0.88rem;
         background:  linear-gradient(to right, #ff1c8b , #f37404);
         line-height: 0.88rem;
+        position: fixed;
+        top:0;
+        left:0;
+        z-index: 999;
     }
 
     .title{
